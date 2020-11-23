@@ -1,0 +1,23 @@
+---
+- name: build sql docker image
+  shell: docker build -t test-mysql /home/ubuntu/service/mysql-microservice/.
+  register: sqlbuild
+- debug:
+    msg: "{{ sqlbuild.stdout_lines }}"
+
+- name: run mysql container 
+  shell: sudo docker run  -d --publish 6603:3306 --volume=/home/ubuntu/service/mysql-microservice/data/:/var/lib/mysql --name=test-mysql-microservice test-mysql
+  register: sqlrun
+
+- debug:
+    msg: "{{ sqlrun.stdout_lines }}"
+
+- name: check mysql container is up
+  shell: sudo docker ps -a
+  register: sqlcont
+
+- debug:
+    msg: "{{ sqlcont.stdout_lines }}"
+
+
+

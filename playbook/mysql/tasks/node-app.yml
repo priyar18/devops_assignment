@@ -1,0 +1,29 @@
+---
+- name: build nodejs docker image
+  shell: sudo docker build -t test-nodejs /home/ubuntu/service/nodejs-microservice/.
+  register: nodebuild
+
+- debug:
+    msg: "{{ nodebuild.stdout_lines }}"
+
+- name: pause
+  pause:
+    seconds: 20
+
+- name: run nodejs container
+  shell: sudo docker run  -d --publish 4000:4000 -e MYSQL_USER='root' -e MYSQL_PASSWORD='password' -e MYSQL_DATABASE='test' -e MYSQL_HOST='172.17.0.2' --link test-mysql-microservice:db --name=test-nodejs-microservice test-nodejs | sleep 10
+  register: noderun
+
+- debug:
+    msg: "{{ noderun.stdout_lines }}"
+
+- name: check nodejs container is up
+  shell: sudo docker ps -a | grep node
+  register: nodecont
+
+- debug:
+    msg: "{{ nodecont.stdout_lines }}"
+    
+- name: check ping status
+  uri:
+   url: http://localhost:4000

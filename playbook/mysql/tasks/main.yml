@@ -1,0 +1,13 @@
+---
+- name: install docker
+  import_tasks: docker.yml
+
+- name: git clone
+  import_tasks: git.yml
+
+- name: sql run
+  import_tasks: sql-app.yml
+
+- name: node run
+  import_tasks: node-app.yml
+

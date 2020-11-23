@@ -1,0 +1,30 @@
+---
+- name: update apt repository
+  shell: apt update
+
+- name: install a few prerequisite packages which let apt use packages over HTTPS
+  shell: apt install apt-transport-https ca-certificates curl software-properties-common -y
+
+- name: add GPG key
+  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+- name: add docker apt repository
+  shell: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+
+- name: update apt repository
+  shell: apt update
+
+- name: install from the Docker repo instead of the default Ubuntu repo
+  shell: apt-cache policy docker-ce
+  register: policy
+
+- debug:
+   msg: "{{ policy }}"
+
+- name: install docker
+  shell: sudo apt install docker-ce -y
+
+- name: Start service docker, if not running
+  service:
+    name: docker
+    state: started

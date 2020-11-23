@@ -1,0 +1,9 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  become: yes
+  serial: 1
+
+  tasks:
+    - import_role:
+        name: mysql
