@@ -1,6 +1,6 @@
 ---
 - name: git clone
-  shell: git clone https://github.com/varunon9/getting-started-docker-mysql-nodejs.git
+  shell: git clone https://github.com/priyar18/devops_assignment.git
   register: clone
 
 - debug:
@@ -10,4 +10,4 @@
   shell: mkdir -p /home/ubuntu/service
 
 - name: move clone repo to that directory
-  shell: cp -r /home/ubuntu/getting-started-docker-mysql-nodejs/* /home/ubuntu/service
+  shell: cp -r /home/ubuntu/devops_assignment/getting-started-docker-mysql-nodejs/* /home/ubuntu/service
